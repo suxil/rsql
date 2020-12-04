@@ -1,0 +1,168 @@
+options {
+    LOOKAHEAD = 1;
+    CHOICE_AMBIGUITY_CHECK = 3;
+    OTHER_AMBIGUITY_CHECK = 2;
+    STATIC = false;
+    DEBUG_PARSER = false;
+    DEBUG_LOOKAHEAD = false;
+    DEBUG_TOKEN_MANAGER = false;
+    UNICODE_INPUT = true;
+    SUPPORT_CLASS_VISIBILITY_PUBLIC = false;
+}
+
+PARSER_BEGIN(Parser)
+
+package org.suxi.rsql.parser;
+
+import org.suxi.rsql.asm.*;
+import org.suxi.rsql.asm.node.*;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+final class RSQLParser {
+
+    private NodeFactory factory;
+
+    public Parser(InputStream stream, String encoding, NodeFactory factory) {
+        this(stream, encoding);
+        this.factory = factory;
+    }
+
+}}
+
+}
+
+PARSER_END(Parser)
+
+
+SKIP :
+{
+    " "
+    | "\t"
+    | "\r"
+    | "\n"
+}
+
+TOKEN :
+{
+    < #ESCAPED_CHAR : "\\" ~[] >
+}
+
+TOKEN :
+{
+    < UNRESERVED_STR    : ( ~["\"", "'", "(", ")", ";", ",", "=", "<", ">", "!", "~", " "] )+ >
+    | < SINGLE_QUOTED_STR : ( "'" ( <ESCAPED_CHAR> | ~["'", "\\"] )* "'" ) >
+    | < DOUBLE_QUOTED_STR : ( "\"" ( <ESCAPED_CHAR> | ~["\"", "\\"] )* "\"" ) >
+}
+
+TOKEN :
+{
+    < AND          : ";" | "and" >
+    | < OR         : "," | "or" >
+    | < LPAREN     : "(" >
+    | < RPAREN     : ")" >
+    | < CONDITION  : ( ( ( "=" (["a"-"z", "A"-"Z"])* ) | "!" ) "=") | ( ( ">" | "<" ) ( "=" )? ) >
+}
+
+
+Node parse() :
+{ final Node node; }
+{
+    node = Or() <EOF>
+    { return node; }
+}
+
+Node Or() :
+{
+    final List<Node> nodeList = new ArrayList<Node>(3);
+    Node node;
+}
+{
+    node = And() { nodeList.add(node); }
+    (
+        <OR> node = And() { nodeList.add(node); }
+    )*
+    { return nodeList.size() != 1 ? factory.createConditionNode(ConditionSymbol.OR, nodeList) : nodeList.get(0); }
+}
+
+Node And() :
+{
+    final List<Node> nodeList = new ArrayList<Node>(3);
+    Node node;
+}
+{
+    node = Constraint() { nodeList.add(node); }
+    (
+        <AND> node = Constraint() { nodeList.add(node); }
+    )*
+    { return nodeList.size() != 1 ? factory.createConditionNode(ConditionSymbol.AND, nodeList) : nodeList.get(0); }
+}
+
+Node Constraint() :
+{ final Node node; }
+{
+    ( node = Group() | node = Condition() )
+    { return node; }
+}
+
+Node Group() :
+{ final Node node; }
+{
+    <LPAREN> node = Or() <RPAREN>
+    { return node; }
+}
+
+WhereNode Condition() :
+{
+    final String fieldName;
+    final String operate;
+    final List<String> value;
+}
+{
+    ( fieldName = FieldName() operate = WhereOperator() value = WhereValue() )
+    { return factory.createWhereNode(fieldName, operate, value); }
+}
+
+String FieldName() : {}
+{
+    token = <UNRESERVED_STR>
+    { return token.image; }
+}
+
+String WhereOperator() : {}
+{
+    ( token = <CONDITION> )
+    { return token.image; }
+}
+
+List<String> WhereValue() :
+{ final Object value; }
+{
+    ( <LPAREN> value = MultiValue() <RPAREN> ) { return (List) value; }
+|
+    value = Value() { return Arrays.asList((String) value); }
+}
+
+List<String> MultiValue() :
+{
+    final List<String> list = new ArrayList<String>(3);
+    String arg;
+}
+{
+    arg = Value() { list.add(arg); }
+    (
+        <OR> arg = Value() { list.add(arg); }
+    )*
+    { return list; }
+}
+
+String Value() :
+{}
+{
+    token = <UNRESERVED_STR> { return token.image; }
+|
+    ( token = <DOUBLE_QUOTED_STR> | token = <SINGLE_QUOTED_STR> ) { return token.image.substring(1, token.image.length() -1); }
+}
