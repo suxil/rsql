@@ -89,7 +89,7 @@ public class DefaultJdbcNodeVisitor extends BaseNodeVisitor<String, Void> {
                 } else if (v.endsWith("*")) {
                     return fieldName + " like " + "'" + v.substring(0, v.length() - 1) + "%'";
                 } else {
-                    return fieldName + " = " + v;
+                    return fieldName + " = " + value;
                 }
             case RSQLOperator.NEQ:
                 return fieldName + " != " + value;

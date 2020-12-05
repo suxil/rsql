@@ -32,9 +32,17 @@ name=in=('zhangsan','lisi');(age>18,age<=35)
 ## 使用
 
 node 可以根据[NodeVisitor](src/main/java/org/suxi/rsql/asm/NodeVisitor.java)遍历语法树，将语法树转换成对应的查询条件。  
-[DefaultJdbcNodeVisitor](src/main/java/org/suxi/rsql/asm/support/DefaultJdbcNodeVisitor.java)一个基于jdbc的实现供参考和使用。
 ```
 Node node = RSQLUtils.parse("type==rsql");
+```
+
+[DefaultJdbcNodeVisitor](src/main/java/org/suxi/rsql/asm/support/DefaultJdbcNodeVisitor.java)一个基于jdbc的实现供参考和使用。  
+```
+String search = "a=in=(1,2);(b=out=(1,2,3),c=='test*');d=nu=;e=nnu=";
+String where = RSQLUtils.parse(search).accept(new DefaultJdbcNodeVisitor());
+
+output: 
+(a in ('1','2') AND (b not in ('1','2','3') OR c like 'test%') AND d is null  AND e is not null )
 ```
 
 ## 自定义操作符
