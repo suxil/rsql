@@ -30,10 +30,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-group = 'org.suxi.rsql'
-version = '0.0.1-SNAPSHOT'
 description = 'rsql'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 publishing {
     publications {
@@ -45,4 +42,9 @@ publishing {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+allprojects {
+    group 'org.suxi.rsql'
+    java.sourceCompatibility = JavaVersion.VERSION_1_8
 }
