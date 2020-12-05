@@ -18,15 +18,22 @@ package org.suxi.rsql;
 import org.junit.Assert;
 import org.suxi.rsql.asm.Node;
 import org.junit.Test;
+import org.suxi.rsql.asm.WhereNode;
+import org.suxi.rsql.asm.WhereOperator;
+
+import java.util.Set;
 
 /**
- * rsql utils test
+ * rsql 工具类测试用例
  *
  * @author lu_it
  * @version V1.0
  */
 public class RSQLUtilsTest {
 
+	/**
+	 * 默认解析规则
+	 */
     @Test
     public void parseTest() {
         String search = "a=in=(1,2);((b=out=(1,2,3),c=='test*');((d==1;e==1;f==1);h==2;i==3));j==1";
@@ -35,5 +42,22 @@ public class RSQLUtilsTest {
 
         Assert.assertNotNull(node);
     }
+
+	/**
+	 * 自定义操作符
+	 */
+	@Test
+    public void customOperatorTest() {
+    	String operator = "=da=";
+
+		Set<WhereOperator> whereOperators = RSQLOperator.defaultOperator();
+		whereOperators.add(new WhereOperator(operator));
+
+		String search = "startDate=da=2020-10-11";
+
+		Node node = RSQLUtils.parse(search, whereOperators);
+
+		Assert.assertEquals(operator, ((WhereNode) node).getOperator().getSymbol()[0]);
+	}
 
 }

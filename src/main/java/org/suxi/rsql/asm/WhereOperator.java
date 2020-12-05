@@ -22,7 +22,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- *
+ * 条件操作符和值
+ * 操作符正则表达式 <t>=[a-zA-Z]*=|[><]=?|!=</t>
+ * 可以自定义操作符
  *
  * @author lu_it
  * @since V1.0

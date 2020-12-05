@@ -15,11 +15,22 @@
  */
 package org.suxi.rsql.asm;
 
+import java.util.function.Function;
+
 /**
- *
+ * 条件解析节点
  *
  * @author lu_it
  * @since V1.0
  */
 public interface Node {
+
+	default <R> R accept(NodeVisitor<R> visitor) {
+		return accept(visitor, null);
+	}
+
+	default <R> R accept(NodeVisitor<R> visitor, Function<WhereNode, R> function) {
+		return visitor.visit(this, function);
+	}
+
 }

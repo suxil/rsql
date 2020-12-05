@@ -21,7 +21,8 @@ import org.suxi.rsql.util.StringUtils;
 import java.util.List;
 
 /**
- *
+ * 查询条件节点
+ * e.g. <t>userType=in=('admin', 'user')</t>
  *
  * @author lu_it
  * @since V1.0

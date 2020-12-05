@@ -16,7 +16,7 @@
 package org.suxi.rsql.exception;
 
 /**
- *
+ * rsql 解析通用异常
  *
  * @author lu_it
  * @since V1.0

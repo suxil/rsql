@@ -18,7 +18,7 @@ package org.suxi.rsql.asm;
 import java.util.List;
 
 /**
- *
+ * 语法解析工厂
  *
  * @author lu_it
  * @since V1.0

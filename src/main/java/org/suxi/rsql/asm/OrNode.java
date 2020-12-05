@@ -18,7 +18,7 @@ package org.suxi.rsql.asm;
 import java.util.List;
 
 /**
- *
+ * or 节点
  *
  * @author lu_it
  * @since V1.0

@@ -18,7 +18,7 @@ package org.suxi.rsql.util;
 import java.util.List;
 
 /**
- *
+ * 字符串工具类
  *
  * @author lu_it
  * @since V1.0

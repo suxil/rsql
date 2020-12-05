@@ -16,7 +16,7 @@
 package org.suxi.rsql.asm;
 
 /**
- *
+ * 条件操作符
  *
  * @author lu_it
  * @since V1.0

@@ -18,7 +18,7 @@ package org.suxi.rsql.util;
 import java.util.Collection;
 
 /**
- *
+ * assert
  *
  * @author lu_it
  * @since V1.0

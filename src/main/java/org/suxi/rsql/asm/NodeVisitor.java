@@ -18,7 +18,7 @@ package org.suxi.rsql.asm;
 import java.util.function.Function;
 
 /**
- *
+ * 节点访问，处理成对应的查询条件
  *
  * @author lu_it
  * @since V1.0

@@ -22,15 +22,12 @@ import org.suxi.rsql.asm.NodeVisitor;
 import org.suxi.rsql.asm.support.DefaultJdbcNodeVisitor;
 
 /**
- * <p> Title: 标题 </p>
- * <pre> Description: 描述 </pre>
- * date: 2019/11/20 21:21
- * <p>
+ * jdbc 访问节点测试用例
  *
  * @author lu_it
  * @version V1.0
  */
-public class RSQLNodeVisitorTest {
+public class JdbcNodeVisitorTest {
 
     @Test
     public void visitJdbcTest() {
@@ -40,7 +37,7 @@ public class RSQLNodeVisitorTest {
 
         NodeVisitor<String> visitor = new DefaultJdbcNodeVisitor();
 
-        String result = visitor.visit(node);
+        String result = node.accept(visitor);
 
         Assert.assertNotNull(result);
     }
@@ -51,14 +48,12 @@ public class RSQLNodeVisitorTest {
 
         Node node = RSQLUtils.parse(search);
 
-        NodeVisitor<String> visitor = new DefaultJdbcNodeVisitor();
-
-        String result = visitor.visit(node, whereNode -> {
-            if ("startDate".equals(whereNode.getFieldName())) {
-                return String.format("start_date = to_date('%s', 'YYYY-MM-DD')", whereNode.getOneValue());
-            }
-            return null;
-        });
+        String result = node.accept(new DefaultJdbcNodeVisitor(), whereNode -> {
+			if ("startDate".equals(whereNode.getFieldName())) {
+				return String.format("start_date = to_date('%s', 'YYYY-MM-DD')", whereNode.getOneValue());
+			}
+			return null;
+		});
 
         Assert.assertEquals("start_date = to_date('2020-10-11', 'YYYY-MM-DD')", result);
     }

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
+ * 默认语法解析工厂实现
  *
  * @author lu_it
  * @since V1.0

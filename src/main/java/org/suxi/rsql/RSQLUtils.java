@@ -29,7 +29,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 /**
- * rsql parser utils
+ * rsql 工具类
+ * 1. 提供各种方式获取rsql解析对象
+ * 2. 自定义操作符的解析对象获取
+ * 3. 默认rsql解析
  *
  * @author lu_it
  * @since V1.0
@@ -63,7 +66,7 @@ public final class RSQLUtils {
         return new RSQLParser(inputStream, encoding.name(), nodeFactory);
     }
 
-    private static Node parse(RSQLParser parser, String search) {
+    private static Node parse(RSQLParser parser) {
         try {
             return parser.parse();
         } catch (Exception e) {
@@ -72,15 +75,19 @@ public final class RSQLUtils {
     }
 
     public static Node parse(String search) {
-        return parse(getRsqlParser(search), search);
+        return parse(getRsqlParser(search));
     }
 
+	public static Node parse(String search, Set<WhereOperator> whereOperatorSet) {
+		return parse(getRsqlParser(search, whereOperatorSet));
+	}
+
     public static Node parse(String search, NodeFactory nodeFactory) {
-        return parse(getRsqlParser(search, nodeFactory), search);
+        return parse(getRsqlParser(search, nodeFactory));
     }
 
     public static Node parse(String search, Charset encoding, NodeFactory nodeFactory) {
-        return parse(getRsqlParser(search, encoding, nodeFactory), search);
+        return parse(getRsqlParser(search, encoding, nodeFactory));
     }
 
 }

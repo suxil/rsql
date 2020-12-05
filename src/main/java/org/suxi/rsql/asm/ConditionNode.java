@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
+ * 基础条件节点
  *
  * @author lu_it
  * @since V1.0

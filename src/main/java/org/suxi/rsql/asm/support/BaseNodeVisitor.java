@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- *
+ * 基础节点访问
  *
  * @author lu_it
  * @since V1.0

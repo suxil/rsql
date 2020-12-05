@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- *
+ * 默认基于 jdbc 的语法解析
  *
  * @author lu_it
  * @since V1.0

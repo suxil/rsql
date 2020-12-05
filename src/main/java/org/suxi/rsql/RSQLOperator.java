@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * rsql operator
+ * rsql 操作符
  *
  * @author lu_it
  * @since V1.0
@@ -40,10 +40,10 @@ public class RSQLOperator {
     public static final String LT2 = "<"; // 小于
     public static final String LE = "=le="; // 小于等于
     public static final String LE2 = "<="; // 小于等于
-    public static final String NULL = "=nu="; // 为null
-    public static final String NOT_NULL = "=nnu="; // 不为null
+    public static final String NULL = "=nu="; // 为 null
+    public static final String NOT_NULL = "=nnu="; // 不为 null
     public static final String IN = "=in="; // in查询
-    public static final String OUT = "=out=";  //或者
+    public static final String OUT = "=out=";  // not in 查询
 
     public static final WhereOperator EQ_OP = new WhereOperator(EQ);
     public static final WhereOperator NEQ_OP = new WhereOperator(NEQ);
