@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2020 suxi
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,10 @@
 package org.suxi.rsql;
 
 import org.junit.Assert;
-import org.suxi.rsql.asm.AndNode;
+import org.junit.Test;
 import org.suxi.rsql.asm.Node;
 import org.suxi.rsql.asm.NodeVisitor;
 import org.suxi.rsql.asm.support.DefaultJdbcNodeVisitor;
-import org.junit.Test;
 
 /**
  * <p> Title: 标题 </p>
@@ -35,17 +34,15 @@ public class RSQLNodeVisitorTest {
 
     @Test
     public void visitJdbcTest() {
-        String search = "a=in=(1,2);((b=out=(1,2,3),c=='test*',c=='*test',c=='*test*');((d==1;e==1;f==1);h==2;i==3));j==1";
+        String search = "a=in=(1,2);((b=out=(1,2,3),c=='test*',c=='*test',c=='*test*');((d==1;e==1,f==1);h==2;i==3));j==1";
 
         Node node = RSQLUtils.parse(search);
 
         NodeVisitor<String, Void> visitor = new DefaultJdbcNodeVisitor();
 
-        if (node instanceof AndNode) {
-            String result = visitor.visit((AndNode) node, null);
+        String result = visitor.visit(node);
 
-            Assert.assertNotNull(result);
-        }
+        Assert.assertNotNull(result);
     }
 
 }

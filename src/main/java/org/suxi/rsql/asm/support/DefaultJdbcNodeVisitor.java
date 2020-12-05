@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2020 suxi
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,10 +23,7 @@ import org.suxi.rsql.asm.*;
 import java.util.List;
 
 /**
- * <p> Title: 标题 </p>
- * <pre> Description: 描述 </pre>
- * date: 2019/11/20 21:18
- * <p>
+ *
  *
  * @author lu_it
  * @since V1.0
@@ -41,6 +38,19 @@ public class DefaultJdbcNodeVisitor extends BaseNodeVisitor<String, Void> {
             return String.format("(%s)", StringUtils.join(result, String.format(" %s ", symbol)));
         }
         return "";
+    }
+
+    @Override
+    public String visit(Node node) {
+        String result = "";
+        if (node instanceof AndNode) {
+            result = visit((AndNode) node, null);
+        } else if (node instanceof OrNode) {
+            result = visit((OrNode) node, null);
+        } else if (node instanceof WhereNode) {
+            result = visit((WhereNode) node, null);
+        }
+        return result;
     }
 
     @Override

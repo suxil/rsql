@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2020 suxi
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +16,7 @@
 package org.suxi.rsql.exception;
 
 /**
- * <p> Title: 标题 </p>
- * <pre> Description: 描述 </pre>
- * date: 2019/11/20
- * <p>
+ *
  *
  * @author lu_it
  * @since V1.0

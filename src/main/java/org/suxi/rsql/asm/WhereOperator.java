@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2020 suxi
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,10 +22,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * <p> Title: 标题 </p>
- * <pre> Description: 描述 </pre>
- * date: 2019/11/19 20:49
- * <p>
+ *
  *
  * @author lu_it
  * @since V1.0

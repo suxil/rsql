@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2020 suxi
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,14 @@
 package org.suxi.rsql.asm;
 
 /**
- * <p> Title: 标题 </p>
- * <pre> Description: 描述 </pre>
- * date: 2019/11/20 21:16
- * <p>
+ *
  *
  * @author lu_it
  * @since V1.0
  */
 public interface NodeVisitor<R, P> {
+
+    R visit(Node node);
 
     R visit(OrNode node, P param);
 

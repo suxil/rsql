@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2020 suxi
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,10 +23,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * <p> Title: 标题 </p>
- * <pre> Description: 描述 </pre>
- * date: 2019/11/20 22:26
- * <p>
+ *
  *
  * @author lu_it
  * @since V1.0

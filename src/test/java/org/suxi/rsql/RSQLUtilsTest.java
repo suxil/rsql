@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2020 suxi
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,15 +34,6 @@ public class RSQLUtilsTest {
         Node node = RSQLUtils.parse(search);
 
         Assert.assertNotNull(node);
-    }
-
-    @Test
-    public void parseJdbcTest() {
-        String search = "a=in=(1,2);((b=out=(1,2,3),c=='test*');((d==1;e==1;f==1);h==2;i==3));j==1";
-
-        String result = RSQLUtils.parseJdbc(search);
-
-        Assert.assertNotNull(result);
     }
 
 }

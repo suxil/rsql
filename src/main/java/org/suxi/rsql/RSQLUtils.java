@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2020 suxi
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,15 @@ package org.suxi.rsql;
 
 import org.suxi.rsql.asm.*;
 import org.suxi.rsql.asm.support.DefaultJdbcNodeVisitor;
+import org.suxi.rsql.asm.support.DefaultNodeFactory;
+import org.suxi.rsql.exception.RSQLCommonException;
 import org.suxi.rsql.parser.RSQLParser;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Set;
 
 /**
  * rsql parser utils
@@ -27,30 +35,71 @@ import org.suxi.rsql.parser.RSQLParser;
  */
 public final class RSQLUtils {
 
-    public static final RSQLParser RSQL_PARSER = new RSQLParser();
+    private static final Charset ENCODING = StandardCharsets.UTF_8;
+
+    public static RSQLParser getRsqlParser(String search) {
+        return getRsqlParser(search, ENCODING, RSQLOperator.defaultOperator());
+    }
+
+    public static RSQLParser getRsqlParser(String search, Charset encoding) {
+        return getRsqlParser(search, encoding, RSQLOperator.defaultOperator());
+    }
+
+    public static RSQLParser getRsqlParser(String search, Set<WhereOperator> whereOperatorSet) {
+        return getRsqlParser(search, ENCODING, new DefaultNodeFactory(whereOperatorSet));
+    }
+
+    public static RSQLParser getRsqlParser(String search, Charset encoding, Set<WhereOperator> whereOperatorSet) {
+        return getRsqlParser(search, encoding, new DefaultNodeFactory(whereOperatorSet));
+    }
+
+    public static RSQLParser getRsqlParser(String search, NodeFactory nodeFactory) {
+        return getRsqlParser(search, ENCODING, nodeFactory);
+    }
+
+    public static RSQLParser getRsqlParser(String search, Charset encoding, NodeFactory nodeFactory) {
+        InputStream inputStream = new ByteArrayInputStream(search.getBytes(encoding));
+        return new RSQLParser(inputStream, encoding.name(), nodeFactory);
+    }
+
+    private static Node parse(RSQLParser parser, String search) {
+        try {
+            return parser.parse();
+        } catch (Exception e) {
+            throw new RSQLCommonException("parse resolve error");
+        }
+    }
 
     public static Node parse(String search) {
-        return RSQL_PARSER.parse(search);
+        return parse(getRsqlParser(search), search);
     }
 
-    public static String parseJdbc(String search) {
-        return parseJdbc(new DefaultJdbcNodeVisitor(), search);
+    public static Node parse(String search, NodeFactory nodeFactory) {
+        return parse(getRsqlParser(search, nodeFactory), search);
     }
 
-    public static String parseJdbc(NodeVisitor<String, Void> visitor, String search) {
-        Node node = parse(search);
-
-        String result = "";
-
-        if (node instanceof AndNode) {
-            result = visitor.visit((AndNode) node, null);
-        } else if (node instanceof OrNode) {
-            result = visitor.visit((OrNode) node, null);
-        } else if (node instanceof WhereNode) {
-            result = visitor.visit((WhereNode) node, null);
-        }
-
-        return result;
+    public static Node parse(String search, Charset encoding, NodeFactory nodeFactory) {
+        return parse(getRsqlParser(search, encoding, nodeFactory), search);
     }
+
+//    public static String parseJdbc(String search, NodeFactory nodeFactory) {
+//        return parseJdbc(search, nodeFactory, new DefaultJdbcNodeVisitor());
+//    }
+//
+//    public static String parseJdbc(String search, Charset encoding, NodeFactory nodeFactory, NodeVisitor<String, Void> visitor) {
+//        Node node = parse(search, encoding, nodeFactory);
+//
+//        String result = "";
+//
+//        if (node instanceof AndNode) {
+//            result = visitor.visit((AndNode) node, null);
+//        } else if (node instanceof OrNode) {
+//            result = visitor.visit((OrNode) node, null);
+//        } else if (node instanceof WhereNode) {
+//            result = visitor.visit((WhereNode) node, null);
+//        }
+//
+//        return result;
+//    }
 
 }
