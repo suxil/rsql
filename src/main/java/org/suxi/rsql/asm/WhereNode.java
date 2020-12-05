@@ -54,6 +54,13 @@ public class WhereNode implements Node {
         return value;
     }
 
+    public String getOneValue() {
+        if (value.isEmpty()) {
+            return "";
+        }
+        return value.get(0);
+    }
+
     @Override
     public String toString() {
         String valueStr = value.size() > 1 ? "('" + StringUtils.join(value, "','") + "')": "'" + value.get(0) + "'";

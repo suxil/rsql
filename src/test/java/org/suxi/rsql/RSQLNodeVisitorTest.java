@@ -38,11 +38,29 @@ public class RSQLNodeVisitorTest {
 
         Node node = RSQLUtils.parse(search);
 
-        NodeVisitor<String, Void> visitor = new DefaultJdbcNodeVisitor();
+        NodeVisitor<String> visitor = new DefaultJdbcNodeVisitor();
 
         String result = visitor.visit(node);
 
         Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void visitJdbcDateTest() {
+        String search = "startDate==2020-10-11";
+
+        Node node = RSQLUtils.parse(search);
+
+        NodeVisitor<String> visitor = new DefaultJdbcNodeVisitor();
+
+        String result = visitor.visit(node, whereNode -> {
+            if ("startDate".equals(whereNode.getFieldName())) {
+                return String.format("start_date = to_date('%s', 'YYYY-MM-DD')", whereNode.getOneValue());
+            }
+            return null;
+        });
+
+        Assert.assertEquals("start_date = to_date('2020-10-11', 'YYYY-MM-DD')", result);
     }
 
 }

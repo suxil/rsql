@@ -20,6 +20,7 @@ import org.suxi.rsql.asm.*;
 import org.suxi.rsql.util.StringUtils;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  *
@@ -40,31 +41,38 @@ public class DefaultJdbcNodeVisitor extends BaseNodeVisitor<String, Void> {
     }
 
     @Override
-    public String visit(Node node) {
+    public String visit(Node node, Function<WhereNode, String> function) {
         String result = "";
         if (node instanceof AndNode) {
-            result = visit((AndNode) node, null);
+            result = visitNode((AndNode) node, null);
         } else if (node instanceof OrNode) {
-            result = visit((OrNode) node, null);
+            result = visitNode((OrNode) node, null);
         } else if (node instanceof WhereNode) {
-            result = visit((WhereNode) node, null);
+            result = visitNode((WhereNode) node, null, function);
         }
         return result;
     }
 
     @Override
-    public String visit(OrNode node, Void param) {
+    protected String visitNode(OrNode node, Void param) {
         return visitOrAndNode(node.getChildren(), node.getConditionSymbol(), param);
     }
 
     @Override
-    public String visit(AndNode node, Void param) {
+    protected String visitNode(AndNode node, Void param) {
         return visitOrAndNode(node.getChildren(), node.getConditionSymbol(), param);
     }
 
     @Override
-    public String visit(WhereNode node, Void param) {
+    protected String visitNode(WhereNode node, Void param, Function<WhereNode, String> function) {
         String fieldName = node.getFieldName();
+
+        if (function != null) {
+            String res = function.apply(node);
+            if (StringUtils.hasText(res)) {
+                return res;
+            }
+        }
 
         String value = String.format("'%s'", StringUtils.join(node.getValue(), "','"));
         if (node.getOperator().isMultiValue()) {
@@ -73,7 +81,7 @@ public class DefaultJdbcNodeVisitor extends BaseNodeVisitor<String, Void> {
 
         switch (node.getOperator().getSymbolStr()) {
             case RSQLOperator.EQ:
-                String v = node.getValue().get(0);
+                String v = node.getOneValue();
                 if (v.startsWith("*") && v.endsWith("*")) {
                     return fieldName + " like " + "'%" + v.substring(1, v.length() - 1) + "%'";
                 } else if (v.startsWith("*")) {

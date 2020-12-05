@@ -15,20 +15,20 @@
  */
 package org.suxi.rsql.asm;
 
+import java.util.function.Function;
+
 /**
  *
  *
  * @author lu_it
  * @since V1.0
  */
-public interface NodeVisitor<R, P> {
+public interface NodeVisitor<R> {
 
-    R visit(Node node);
+    default R visit(Node node) {
+        return visit(node, null);
+    }
 
-    R visit(OrNode node, P param);
-
-    R visit(AndNode node, P param);
-
-    R visit(WhereNode node, P param);
+    R visit(Node node, Function<WhereNode, R> function);
 
 }

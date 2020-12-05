@@ -20,6 +20,7 @@ import org.suxi.rsql.asm.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  *
@@ -27,7 +28,7 @@ import java.util.function.Consumer;
  * @author lu_it
  * @since V1.0
  */
-public abstract class BaseNodeVisitor<R, P> implements NodeVisitor<R, P> {
+public abstract class BaseNodeVisitor<R, P> implements NodeVisitor<R> {
 
     protected List<R> handlerChildren(List<Node> nodeList, P param) {
         return handlerChildren(nodeList, param, null);
@@ -41,11 +42,11 @@ public abstract class BaseNodeVisitor<R, P> implements NodeVisitor<R, P> {
 
         for (Node itemNode : nodeList) {
             if (itemNode instanceof OrNode) {
-                result.add(visit((OrNode) itemNode, param));
+                result.add(visitNode((OrNode) itemNode, param));
             } else if (itemNode instanceof AndNode) {
-                result.add(visit((AndNode) itemNode, param));
+                result.add(visitNode((AndNode) itemNode, param));
             } else if (itemNode instanceof WhereNode) {
-                result.add(visit((WhereNode) itemNode, param));
+                result.add(visitNode((WhereNode) itemNode, param));
             }
             if (consumer != null) {
                 consumer.accept(param);
@@ -54,5 +55,15 @@ public abstract class BaseNodeVisitor<R, P> implements NodeVisitor<R, P> {
 
         return result;
     }
+
+    protected abstract R visitNode(OrNode node, P param);
+
+    protected abstract R visitNode(AndNode node, P param);
+
+    protected R visitNode(WhereNode node, P param) {
+        return visitNode(node, param, null);
+    }
+
+    protected abstract R visitNode(WhereNode node, P param, Function<WhereNode, R> function);
 
 }
