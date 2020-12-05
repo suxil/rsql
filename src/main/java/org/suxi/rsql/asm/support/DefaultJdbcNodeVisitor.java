@@ -18,7 +18,6 @@ package org.suxi.rsql.asm.support;
 import org.suxi.rsql.RSQLOperator;
 import org.suxi.rsql.asm.*;
 import org.suxi.rsql.util.StringUtils;
-import org.suxi.rsql.asm.*;
 
 import java.util.List;
 

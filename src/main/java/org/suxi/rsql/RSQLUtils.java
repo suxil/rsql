@@ -15,8 +15,9 @@
  */
 package org.suxi.rsql;
 
-import org.suxi.rsql.asm.*;
-import org.suxi.rsql.asm.support.DefaultJdbcNodeVisitor;
+import org.suxi.rsql.asm.Node;
+import org.suxi.rsql.asm.NodeFactory;
+import org.suxi.rsql.asm.WhereOperator;
 import org.suxi.rsql.asm.support.DefaultNodeFactory;
 import org.suxi.rsql.exception.RSQLCommonException;
 import org.suxi.rsql.parser.RSQLParser;
@@ -81,25 +82,5 @@ public final class RSQLUtils {
     public static Node parse(String search, Charset encoding, NodeFactory nodeFactory) {
         return parse(getRsqlParser(search, encoding, nodeFactory), search);
     }
-
-//    public static String parseJdbc(String search, NodeFactory nodeFactory) {
-//        return parseJdbc(search, nodeFactory, new DefaultJdbcNodeVisitor());
-//    }
-//
-//    public static String parseJdbc(String search, Charset encoding, NodeFactory nodeFactory, NodeVisitor<String, Void> visitor) {
-//        Node node = parse(search, encoding, nodeFactory);
-//
-//        String result = "";
-//
-//        if (node instanceof AndNode) {
-//            result = visitor.visit((AndNode) node, null);
-//        } else if (node instanceof OrNode) {
-//            result = visitor.visit((OrNode) node, null);
-//        } else if (node instanceof WhereNode) {
-//            result = visitor.visit((WhereNode) node, null);
-//        }
-//
-//        return result;
-//    }
 
 }

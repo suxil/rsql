@@ -34,7 +34,7 @@ public class RSQLNodeVisitorTest {
 
     @Test
     public void visitJdbcTest() {
-        String search = "a=in=(1,2);((b=out=(1,2,3),c=='test*',c=='*test',c=='*test*');((d==1;e==1,f==1);h==2;i==3));j==1";
+        String search = "a=in=(1,2);((b=out=(1,2,3),c=='test*',c=='*test',c=='*test*');((d==1;e==1,f==1);h==2;i==3));j==1;j=nu=1;j=nnu=1";
 
         Node node = RSQLUtils.parse(search);
 

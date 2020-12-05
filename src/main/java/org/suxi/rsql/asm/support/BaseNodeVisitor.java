@@ -16,7 +16,6 @@
 package org.suxi.rsql.asm.support;
 
 import org.suxi.rsql.asm.*;
-import org.suxi.rsql.asm.*;
 
 import java.util.ArrayList;
 import java.util.List;
