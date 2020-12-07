@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.suxi.rsql;
+package org.suxi.rsql.asm.support;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.suxi.rsql.RSQLUtils;
 import org.suxi.rsql.asm.Node;
 import org.suxi.rsql.asm.NodeVisitor;
 import org.suxi.rsql.asm.support.DefaultJdbcNodeVisitor;
@@ -29,9 +30,9 @@ import org.suxi.rsql.asm.support.DefaultJdbcNodeVisitor;
  */
 public class JdbcNodeVisitorTest {
 
-    @Test
+	@Test
     public void visitJdbcTest() {
-        String search = "a=in=(1,2);(b=out=(1,2,3),c=='test*');d=nu=;e=nnu=";
+        String search = "a=in=(1,2);(b.type=out=(1,2,3),c=='test*');d=nu=;e=nnu=";
 
         Node node = RSQLUtils.parse(search);
 
@@ -40,6 +41,7 @@ public class JdbcNodeVisitorTest {
         String result = node.accept(visitor);
 
         Assert.assertNotNull(result);
+        Assert.assertEquals(result, visitor.visit(node));
     }
 
     @Test

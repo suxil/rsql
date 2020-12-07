@@ -20,7 +20,10 @@ import org.suxi.rsql.asm.Node;
 import org.junit.Test;
 import org.suxi.rsql.asm.WhereNode;
 import org.suxi.rsql.asm.WhereOperator;
+import org.suxi.rsql.asm.support.DefaultNodeFactory;
+import org.suxi.rsql.parser.RSQLParser;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 /**
@@ -31,17 +34,62 @@ import java.util.Set;
  */
 public class RSQLUtilsTest {
 
+	@Test
+	public void getRsqlParserTest() {
+		RSQLParser rsqlParser = RSQLUtils.getRsqlParser("a=in=(1,2)", StandardCharsets.UTF_8);
+		Assert.assertNotNull(rsqlParser);
+	}
+
 	/**
 	 * 默认解析规则
 	 */
     @Test
     public void parseTest() {
-        String search = "a=in=(1,2);((b=out=(1,2,3),c=='test*');((d==1;e==1;f==1);h==2;i==3));j==1";
+        String search = "a=in=(1,2);((b.type=out=(1,2,3),c=='test*');((d==1;e==1;f==1);h==2;i==3));j==1";
 
         Node node = RSQLUtils.parse(search);
 
         Assert.assertNotNull(node);
     }
+
+	/**
+	 * 自定义规则工厂
+	 */
+	@Test
+	public void parseCustomFactoryTest() {
+		String search = "a=in=(1,2);((b.type=out=(1,2,3),c=='test*');((d==1;e==1;f==1);h==2;i==3));j==1";
+
+		Node node = RSQLUtils.parse(search, new DefaultNodeFactory(RSQLOperator.defaultOperator()));
+
+		Assert.assertNotNull(node);
+	}
+
+	/**
+	 * 自定义规则工厂
+	 */
+	@Test
+	public void parseCustomEncodeAndFactoryTest() {
+		String search = "(a=in=('1','2'),b=='12')";
+
+		Node node = RSQLUtils.parse(search, StandardCharsets.UTF_8, new DefaultNodeFactory(RSQLOperator.defaultOperator()));
+
+		Assert.assertNotNull(node);
+		Assert.assertEquals(search, node.toString());
+	}
+
+	/**
+	 * 异常解析规则
+	 */
+	@Test
+	public void parseErrorTest() {
+		String search = "a=in=(1,2))";
+
+		try {
+			RSQLUtils.parse(search);
+		} catch (Exception e) {
+			Assert.assertTrue(e.getMessage(), true);
+		}
+	}
 
 	/**
 	 * 自定义操作符
