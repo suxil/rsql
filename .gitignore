@@ -26,6 +26,7 @@ hs_err_pid*
 target
 .gradle
 build
+!gradle/wrapper/gradle-wrapper.jar
 
 # parser 目录添加到远程使可以正常打包
 #**/parser/*
