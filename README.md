@@ -1,4 +1,4 @@
-# RSQL ![license](https://img.shields.io/github/license/suxi-lu/rsql) ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/suxi-lu/rsql) ![Gitlab code coverage](https://img.shields.io/gitlab/coverage/suxi-lu/rsql/master)
+# RSQL ![license](https://img.shields.io/github/license/suxi-lu/rsql) ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/suxi-lu/rsql) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/suxi-lu/rsql/Java%20CI%20with%20Gradle) ![Gitlab code coverage](https://img.shields.io/gitlab/coverage/suxi-lu/rsql/master)
 
 RSQL是一种查询语言，用于对restfulapi中的条目进行参数化过滤。
 它基于FIQL（feeditemquerylanguage）——一种URI友好的语法，用于在Atom提要中的条目之间表示过滤器。
