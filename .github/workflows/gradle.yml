@@ -27,4 +27,4 @@ jobs:
     - name: Build with Code Coverage
       run: ./gradlew check && ./gradlew codeCoverageReport
     - name: Deploy Code Coverage Result
-      run: bash <(curl -s https://codecov.io/bash) -t 245b0ffb-282e-439f-ba5d-84341f92a936
+      run: bash <(curl -s https://codecov.io/bash)
