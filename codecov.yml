@@ -1,3 +1,0 @@
-# https://docs.codecov.io/docs/ignoring-paths
-ignore:
-  - "src/main/java/org/suxi/rsql/parser"  # ignore folders and all its contents
