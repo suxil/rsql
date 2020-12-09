@@ -26,11 +26,10 @@ PARSER_BEGIN(RSQLParser)
 
 package org.suxi.rsql.parser;
 
-import org.suxi.rsql.asm.*;
+import io.github.suxi.rsql.asm.NodeFactory;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public final class RSQLParser {
@@ -41,6 +40,8 @@ public final class RSQLParser {
         this(stream, encoding);
         this.factory = factory;
     }
+
+}}
 
 }
 

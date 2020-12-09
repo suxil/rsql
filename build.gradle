@@ -32,13 +32,33 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
+group = 'io.github.suxi'
 description = 'rsql'
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+jar.dependsOn(sourceJar)
 
 publishing {
     publications {
         maven(MavenPublication) {
+            groupId = group
+            artifactId = project.name
+            version = version
+
+            artifact(sourceJar) {
+                classifier "sources"
+            }
+
             from(components.java)
         }
+//        repositories {
+//            maven {
+//                url 'https://repo1.maven.org/maven2/'
+//            }
+//        }
     }
 }
 
@@ -47,7 +67,7 @@ tasks.withType(JavaCompile) {
 }
 
 allprojects {
-    group 'org.suxi.rsql'
+    group = group
     java.sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
