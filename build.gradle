@@ -32,7 +32,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-group = 'io.github.suxi'
+group = 'io.github.suxil'
 description = 'rsql'
 
 task sourceJar(type: Jar) {
