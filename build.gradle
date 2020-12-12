@@ -62,6 +62,10 @@ signing {
 }
 
 def signInit() {
+    if (version.endsWith('SNAPSHOT')) {
+        return;
+    }
+
     Properties properties = new Properties()
     properties.load(new File("sign.properties").newDataInputStream())
 
@@ -75,9 +79,11 @@ def signInit() {
 uploadArchives {
     repositories {
         mavenDeployer {
-            signInit()
+            if (!version.endsWith('SNAPSHOT')) {
+                signInit()
 
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            }
 
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                 authentication(userName: ossrhUsername, password: ossrhPassword)
