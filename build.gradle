@@ -39,6 +39,7 @@ archivesBaseName = 'rsql'
 version = version
 description = 'rsql'
 
+def release = !version.endsWith('SNAPSHOT')
 
 def ossrhUsername = System.getenv('SONATYPE_NEXUS_USERNAME')
 def ossrhPassword = System.getenv('SONATYPE_NEXUS_PASSWORD')
@@ -58,11 +59,15 @@ artifacts {
 }
 
 signing {
+    if (!release) {
+        return;
+    }
+
     sign configurations.archives
 }
 
 def signInit() {
-    if (version.endsWith('SNAPSHOT')) {
+    if (!release) {
         return;
     }
 
@@ -79,7 +84,7 @@ def signInit() {
 uploadArchives {
     repositories {
         mavenDeployer {
-            if (!version.endsWith('SNAPSHOT')) {
+            if (!release) {
                 signInit()
 
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
