@@ -40,6 +40,7 @@ version = version
 description = 'rsql'
 
 def release = !version.endsWith('SNAPSHOT')
+println('release version: ' + release)
 
 def ossrhUsername = System.getenv('SONATYPE_NEXUS_USERNAME')
 def ossrhPassword = System.getenv('SONATYPE_NEXUS_PASSWORD')
@@ -58,43 +59,43 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-signing {
-    if (!release) {
-        return;
+if (release) {
+    signing {
+        sign configurations.archives
     }
-
-    sign configurations.archives
 }
 
 def signInit() {
-    if (!release) {
-        return;
+    if (release) {
+        Properties properties = new Properties()
+        properties.load(new File('sign.properties').newDataInputStream())
+
+        print('key id: ' + properties.get('signing.keyId'))
+
+        ext.'signing.keyId' = properties.get('signing.keyId');
+        ext.'signing.password' = properties.get('signing.password');
+        ext.'signing.secretKeyRingFile' = properties.get('signing.secretKeyRingFile');
     }
-
-    Properties properties = new Properties()
-    properties.load(new File("sign.properties").newDataInputStream())
-
-    print("key id: " + properties.get("signing.keyId"))
-
-    ext."signing.keyId" = properties.get("signing.keyId");
-    ext."signing.password" = properties.get("signing.password");
-    ext."signing.secretKeyRingFile" = properties.get("signing.secretKeyRingFile");
 }
 
 uploadArchives {
     repositories {
         mavenDeployer {
-            if (!release) {
+            if (release) {
                 signInit()
 
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            } else {
+                println('skip upload archives')
+                return
             }
+            println('upload archives')
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
                 authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+            snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
                 authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 
@@ -140,7 +141,7 @@ allprojects {
 }
 
 task codeCoverageReport(type: JacocoReport) {
-    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    executionData fileTree(project.rootDir.absolutePath).include('**/build/jacoco/*.exec')
 
     subprojects.each {
         sourceSets it.sourceSets.main
@@ -148,7 +149,7 @@ task codeCoverageReport(type: JacocoReport) {
 
     reports {
         xml.enabled true
-        xml.destination file("${buildDir}/reports/jacoco/report.xml")
+        xml.destination file('${buildDir}/reports/jacoco/report.xml')
         html.enabled false
         csv.enabled false
     }
