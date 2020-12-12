@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 suxi
+ * Copyright 2020 suxil
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package io.github.suxil.rsql.asm;
 import java.util.function.Function;
 
 /**
- * 节点访问，处理成对应的查询条件
+ * node visit, handle search condition
  *
  * @author lu_it
  * @since V1.0

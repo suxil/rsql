@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 suxi
+ * Copyright 2020 suxil
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@ package io.github.suxil.rsql;
 import io.github.suxil.rsql.asm.Node;
 import io.github.suxil.rsql.asm.WhereNode;
 import io.github.suxil.rsql.asm.WhereOperator;
+import io.github.suxil.rsql.asm.support.DefaultNodeFactory;
 import io.github.suxil.rsql.parser.RSQLParser;
 import org.junit.Assert;
 import org.junit.Test;
-import io.github.suxil.rsql.asm.support.DefaultNodeFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Set;

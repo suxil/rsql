@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 suxi
+ * Copyright 2020 suxil
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * 默认基于 jdbc 的语法解析
+ * default use jdbc grammar analysis
  *
  * @author lu_it
  * @since V1.0

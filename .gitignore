@@ -28,6 +28,9 @@ target
 build
 !gradle/wrapper/gradle-wrapper.jar
 
+sign.properties
+secring.gpg
+
 # parser 目录添加到远程使可以正常打包
 #**/parser/*
 #!**/parser/package-info.java

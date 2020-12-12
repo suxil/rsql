@@ -4,9 +4,10 @@
 
 plugins {
     id 'java'
+    id 'maven'
     id 'jacoco'
+    id 'signing'
     id 'maven-publish'
-    id 'net.researchgate.release' version '2.8.1'
 }
 
 repositories {
@@ -32,33 +33,88 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-group = 'io.github.suxil'
+group = group
+archivesBaseName = 'rsql'
+version = version
 description = 'rsql'
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
+
+def ossrhUsername = System.getenv('SONATYPE_NEXUS_USERNAME')
+def ossrhPassword = System.getenv('SONATYPE_NEXUS_PASSWORD')
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
 }
 
-jar.dependsOn(sourceJar)
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = group
-            artifactId = project.name
-            version = version
+artifacts {
+    archives javadocJar, sourcesJar
+}
 
-            artifact(sourceJar) {
-                classifier "sources"
+signing {
+    sign configurations.archives
+}
+
+def signInit() {
+    Properties properties = new Properties()
+    properties.load(new File("sign.properties").newDataInputStream())
+
+    print("key id: " + properties.get("signing.keyId"))
+
+    ext."signing.keyId" = properties.get("signing.keyId");
+    ext."signing.password" = properties.get("signing.password");
+    ext."signing.secretKeyRingFile" = properties.get("signing.secretKeyRingFile");
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            signInit()
+
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 
-            from(components.java)
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                version version
+                name 'rsql'
+                packaging 'jar'
+                description 'rsql parser'
+                url 'https://github.com/suxil/rsql'
+
+                scm {
+                    connection 'scm:git:git://github.com/suxil/rsql.git'
+                    developerConnection 'scm:git:ssh://git@github.com/suxil/rsql.git'
+                    url 'https://github.com/suxil/rsql/'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'suxil'
+                        name 'suxil'
+                        email 'lu_it_work@163.com'
+                    }
+                }
+            }
         }
-//        repositories {
-//            maven {
-//                url 'https://repo1.maven.org/maven2/'
-//            }
-//        }
     }
 }
 

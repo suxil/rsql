@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 suxi
+ * Copyright 2020 suxil
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,27 +23,27 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * rsql 操作符
+ * rsql operate symbol
  *
  * @author lu_it
  * @since V1.0
  */
 public class RSQLOperator {
 
-    public static final String EQ = "=="; // 相等
-    public static final String NEQ = "!="; // 不相等
-    public static final String GT = "=gt="; // 大于
-    public static final String GT2 = ">"; // 大于
-    public static final String GE = "=ge="; // 大于等于
-    public static final String GE2 = ">="; // 大于等于
-    public static final String LT = "=lt="; // 小于
-    public static final String LT2 = "<"; // 小于
-    public static final String LE = "=le="; // 小于等于
-    public static final String LE2 = "<="; // 小于等于
-    public static final String NULL = "=nu="; // 为 null
-    public static final String NOT_NULL = "=nnu="; // 不为 null
-    public static final String IN = "=in="; // in查询
-    public static final String OUT = "=out=";  // not in 查询
+    public static final String EQ = "=="; // equal
+    public static final String NEQ = "!="; // not equal
+    public static final String GT = "=gt="; // >
+    public static final String GT2 = ">"; // >
+    public static final String GE = "=ge="; // >=
+    public static final String GE2 = ">="; // >=
+    public static final String LT = "=lt="; // <
+    public static final String LT2 = "<"; // <
+    public static final String LE = "=le="; // <=
+    public static final String LE2 = "<="; // <=
+    public static final String NULL = "=nu="; // is null
+    public static final String NOT_NULL = "=nnu="; // is not null
+    public static final String IN = "=in="; // in
+    public static final String OUT = "=out=";  // not in
 
     public static final WhereOperator EQ_OP = new WhereOperator(EQ);
     public static final WhereOperator NEQ_OP = new WhereOperator(NEQ);

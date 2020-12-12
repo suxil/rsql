@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 suxi
+ * Copyright 2020 suxil
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import io.github.suxil.rsql.util.StringUtils;
 import java.util.List;
 
 /**
- * 查询条件节点
- * e.g. <t>userType=in=('admin', 'user')</t>
+ * search condition node
+ * e.g. <tt>userType=in=('admin', 'user')</tt>
  *
  * @author lu_it
  * @since V1.0

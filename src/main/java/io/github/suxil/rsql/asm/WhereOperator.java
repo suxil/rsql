@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 suxi
+ * Copyright 2020 suxil
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * 条件操作符和值
- * 操作符正则表达式 <t>=[a-zA-Z]*=|[><]=?|!=</t>
- * 可以自定义操作符
+ * condition operate symbol and value
+ * pattern <tt>=[a-zA-Z]*=|[&gt;&lt;]=?|!=</tt>
+ * custom condition operate symbol
  *
  * @author lu_it
  * @since V1.0

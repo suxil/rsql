@@ -1,4 +1,4 @@
-# RSQL ![license](https://img.shields.io/github/license/suxi-lu/rsql) ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/suxi-lu/rsql) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/suxi-lu/rsql/Java%20CI%20with%20Gradle) ![Gitlab code coverage](https://img.shields.io/gitlab/coverage/suxi-lu/rsql/master)
+# RSQL ![license](https://img.shields.io/github/license/suxil/rsql) ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/suxil/rsql) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/suxil/rsql/Java%20CI%20with%20Gradle) ![Gitlab code coverage](https://img.shields.io/gitlab/coverage/suxil/rsql/master)
 
 RSQL是一种查询语言，用于对restfulapi中的条目进行参数化过滤。
 它基于FIQL（feeditemquerylanguage）——一种URI友好的语法，用于在Atom提要中的条目之间表示过滤器。
@@ -32,12 +32,12 @@ name=in=('zhangsan','lisi');(age>18,age<=35)
 
 ## 使用
 
-node 可以根据[NodeVisitor](src/main/java/org/suxi/rsql/asm/NodeVisitor.java)遍历语法树，将语法树转换成对应的查询条件。  
+node 可以根据[NodeVisitor](src/main/java/io/github/suxil/rsql/asm/NodeVisitor.java)遍历语法树，将语法树转换成对应的查询条件。  
 ```
 Node node = RSQLUtils.parse("type==rsql");
 ```
 
-[DefaultJdbcNodeVisitor](src/main/java/org/suxi/rsql/asm/support/DefaultJdbcNodeVisitor.java)一个基于jdbc的实现供参考和使用。  
+[DefaultJdbcNodeVisitor](src/main/java/io/github/suxil/rsql/asm/support/DefaultJdbcNodeVisitor.java)一个基于jdbc的实现供参考和使用。  
 ```
 String search = "a=in=(1,2);(b=out=(1,2,3),c=='test*');d=nu=;e=nnu=";
 String where = RSQLUtils.parse(search).accept(new DefaultJdbcNodeVisitor());

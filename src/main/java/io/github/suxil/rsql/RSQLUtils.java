@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 suxi
+ * Copyright 2020 suxil
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 /**
- * rsql 工具类
- * 1. 提供各种方式获取rsql解析对象
- * 2. 自定义操作符的解析对象获取
- * 3. 默认rsql解析
+ * rsql utils
+ * 1. various ways to obtain rsql parsing objects
+ * 2. getting parsing objects of custom operators
+ * 3. default rsql parser
  *
  * @author lu_it
  * @since V1.0
