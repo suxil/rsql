@@ -35,7 +35,6 @@ dependencies {
 }
 
 group = group
-archivesBaseName = 'rsql'
 version = version
 description = 'rsql'
 
@@ -45,14 +44,29 @@ println('release version: ' + release)
 def ossrhUsername = System.getenv('SONATYPE_NEXUS_USERNAME')
 def ossrhPassword = System.getenv('SONATYPE_NEXUS_PASSWORD')
 
+def manifestAttr = {
+    attributes(
+            "Implementation-Title": project.name,
+            "Implementation-Version": project.version,
+            "Created-By": "Gradle Archiver 6.7.1",
+            "Build-Jdk-Spec": "1.8",
+    )
+}
+
+jar {
+    manifest manifestAttr
+}
+
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
     from javadoc
+    manifest manifestAttr
 }
 
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.allSource
+    manifest manifestAttr
 }
 
 artifacts {
