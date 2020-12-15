@@ -15,18 +15,17 @@
  */
 package io.github.suxil.rsql;
 
-import io.github.suxil.rsql.asm.Node;
-import io.github.suxil.rsql.asm.NodeFactory;
-import io.github.suxil.rsql.asm.WhereOperator;
+import io.github.suxil.rsql.asm.*;
 import io.github.suxil.rsql.asm.support.DefaultNodeFactory;
 import io.github.suxil.rsql.exception.RSQLCommonException;
 import io.github.suxil.rsql.parser.RSQLParser;
+import io.github.suxil.rsql.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Set;
+import java.util.*;
 
 /**
  * rsql utils
@@ -89,5 +88,57 @@ public final class RSQLUtils {
     public static Node parse(String search, Charset encoding, NodeFactory nodeFactory) {
         return parse(getRsqlParser(search, encoding, nodeFactory));
     }
+
+	/**
+	 * 遍历节点，返回字段对应的条件，原条件不变
+	 * @param node
+	 * @param fieldName
+	 * @return
+	 */
+	public static List<WhereNode> getWhereNodeByFieldName(Node node, String fieldName) {
+		return getWhereNodeByFieldName(node, fieldName, true);
+	}
+
+	/**
+	 * 遍历节点，返回字段对应的条件，可以选择是否删除条件
+	 * @param node
+	 * @param fieldName
+	 * @param remove
+	 * @return
+	 */
+	public static List<WhereNode> getWhereNodeByFieldName(Node node, String fieldName, boolean remove) {
+		if (node == null || StringUtils.isBlank(fieldName)) {
+			return Collections.emptyList();
+		}
+
+		Stack<Node> nodeStack = new Stack<>();
+		nodeStack.add(node);
+		List<WhereNode> result = new ArrayList<>();
+		while (!nodeStack.isEmpty()) {
+			Node itemNode = nodeStack.pop();
+			if (itemNode instanceof ConditionNode) {
+				ConditionNode conditionNode = (ConditionNode) itemNode;
+
+				Iterator<Node> iterator = conditionNode.getChildren().iterator();
+				while (iterator.hasNext()) {
+					Node childNode = iterator.next();
+					if (childNode instanceof WhereNode) {
+						WhereNode whereNode = (WhereNode) childNode;
+						if (whereNode.getFieldName().equals(fieldName)) {
+							result.add(whereNode);
+							// 是否删除
+							if (remove) {
+								iterator.remove();
+							}
+						}
+					} else {
+						nodeStack.add(childNode);
+					}
+				}
+			}
+		}
+
+    	return result;
+	}
 
 }

@@ -24,6 +24,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -106,6 +107,38 @@ public class RSQLUtilsTest {
 		Node node = RSQLUtils.parse(search, whereOperators);
 
 		Assert.assertEquals(operator, ((WhereNode) node).getOperator().getSymbol()[0]);
+	}
+
+	/**
+	 * 删除字段名称对应的条件
+	 */
+	@Test
+	public void getWhereNodeByFieldNameRemoveTest() {
+		String search = "a=in=(1,2);((b.type=out=(1,2,3),c=='test*');((d==1;e==1;f==1);h==2;i==3));j==1";
+
+		Node node = RSQLUtils.parse(search, new DefaultNodeFactory(RSQLOperator.defaultOperator()));
+
+		List<WhereNode> whereNodeList = RSQLUtils.getWhereNodeByFieldName(node, "a");
+
+		Assert.assertEquals(1, whereNodeList.size());
+		Assert.assertEquals("a=in=('1','2')", whereNodeList.get(0).toString());
+		Assert.assertFalse(node.toString().contains("a=in="));
+	}
+
+	/**
+	 * 通过字段名获取条件节点
+	 */
+	@Test
+	public void getWhereNodeByFieldNameTest() {
+		String search = "a=in=(1,2);((b.type=out=(1,2,3),c=='test*');((d==1;e==1;f==1);h==2;i==3));j==1";
+
+		Node node = RSQLUtils.parse(search, new DefaultNodeFactory(RSQLOperator.defaultOperator()));
+
+		List<WhereNode> whereNodeList = RSQLUtils.getWhereNodeByFieldName(node, "c", false);
+
+		Assert.assertEquals(1, whereNodeList.size());
+		Assert.assertEquals("c=='test*'", whereNodeList.get(0).toString());
+		Assert.assertTrue(node.toString().contains("c=="));
 	}
 
 }
