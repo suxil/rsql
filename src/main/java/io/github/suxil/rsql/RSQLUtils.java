@@ -90,7 +90,7 @@ public final class RSQLUtils {
     }
 
 	/**
-	 * 遍历节点，返回字段对应的条件，原条件不变
+	 * iterator node, return fieldName condition, origin condition no change
 	 * @param node
 	 * @param fieldName
 	 * @return
@@ -100,7 +100,7 @@ public final class RSQLUtils {
 	}
 
 	/**
-	 * 遍历节点，返回字段对应的条件，可以选择是否删除条件
+	 * iterator node, return fieldName condition, origin condition sure remove
 	 * @param node
 	 * @param fieldName
 	 * @param remove
