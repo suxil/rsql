@@ -141,4 +141,22 @@ public class RSQLUtilsTest {
 		Assert.assertTrue(node.toString().contains("c=="));
 	}
 
+	@Test
+	public void getFieldValueTest() {
+		String search = "a=in=(1,2);((b.type=out=(1,2,3),c=='test*');((d==1;e==1;f==1);h==2;i==3));j==1";
+
+		String value= RSQLUtils.getFieldValue(search, "d");
+
+		Assert.assertEquals("1", value);
+	}
+
+	@Test
+	public void removeFieldTest() {
+		String search = "a=in=(1,2);((b.type=out=(1,2,3),c=='test*');((d==1;e==1;f==1);h==2;i==3));j==1";
+
+		String searchStr = RSQLUtils.removeField(search, "c");
+
+		Assert.assertFalse(searchStr.contains("c"));
+	}
+
 }

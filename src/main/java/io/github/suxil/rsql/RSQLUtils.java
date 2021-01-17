@@ -141,4 +141,19 @@ public final class RSQLUtils {
     	return result;
 	}
 
+	public static String getFieldValue(String search, String fieldName) {
+		Node node = RSQLUtils.parse(search);
+		List<WhereNode> list = getWhereNodeByFieldName(node, fieldName);
+		if (list.isEmpty()) {
+			return "";
+		}
+		return list.get(0).getOneValue();
+	}
+
+	public static String removeField(String search, String fieldName) {
+		Node node = RSQLUtils.parse(search);
+		getWhereNodeByFieldName(node, fieldName);
+		return node.toString();
+	}
+
 }
