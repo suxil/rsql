@@ -27,9 +27,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * rsql utils
@@ -95,9 +93,9 @@ public final class RSQLUtils {
 
 	/**
 	 * iterator node, return fieldName condition, origin condition no change
-	 * @param node
-	 * @param fieldName
-	 * @return
+	 * @param node node
+	 * @param fieldName fieldName
+	 * @return list
 	 */
 	public static List<WhereNode> getWhereNodeByFieldName(Node node, String fieldName) {
 		return getWhereNodeByFieldName(node, fieldName, true);
@@ -105,10 +103,10 @@ public final class RSQLUtils {
 
 	/**
 	 * iterator node, return fieldName condition, origin condition sure remove
-	 * @param node
-	 * @param fieldName
-	 * @param remove
-	 * @return
+	 * @param node node
+	 * @param fieldName fieldName
+	 * @param remove remove
+	 * @return list
 	 */
 	public static List<WhereNode> getWhereNodeByFieldName(Node node, String fieldName, boolean remove) {
 		if (node == null || StringUtils.isBlank(fieldName)) {
@@ -130,24 +128,12 @@ public final class RSQLUtils {
     	return result;
 	}
 
-	/**
-	 * iterator node
-	 * @param search
-	 * @param whereNodeConsumer
-	 * @return
-	 */
 	public static void whereNodeIterator(String search, Consumer<WhereNode> whereNodeConsumer) {
 		Node node = parse(search);
 
 		whereNodeIterator(node, whereNodeConsumer);
 	}
 
-	/**
-	 * iterator node
-	 * @param node
-	 * @param whereNodeConsumer
-	 * @return
-	 */
 	public static void whereNodeIterator(Node node, Consumer<WhereNode> whereNodeConsumer) {
 		if (node == null || whereNodeConsumer == null) {
 			return;
@@ -160,9 +146,9 @@ public final class RSQLUtils {
 
 	/**
 	 * iterator node
-	 * @param node
-	 * @param whereNodeBiConsumer
-	 * @return
+	 * @param node node
+	 * @param whereNodeBiConsumer whereNodeConsumer
+	 * @return void
 	 */
 	private static void whereNodeIterator(Node node, BiConsumer<Iterator<Node>, WhereNode> whereNodeBiConsumer) {
 		if (node == null || whereNodeBiConsumer == null) {
@@ -193,8 +179,7 @@ public final class RSQLUtils {
 
 	public static List<WhereNode> getFieldAllValue(String search, String fieldName) {
 		Node node = RSQLUtils.parse(search);
-		List<WhereNode> list = getWhereNodeByFieldName(node, fieldName);
-		return list;
+		return getWhereNodeByFieldName(node, fieldName);
 	}
 
 	public static String getFieldValue(String search, String fieldName) {
