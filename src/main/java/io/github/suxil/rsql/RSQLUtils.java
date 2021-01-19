@@ -26,6 +26,10 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * rsql utils
@@ -111,9 +115,63 @@ public final class RSQLUtils {
 			return Collections.emptyList();
 		}
 
+		List<WhereNode> result = new ArrayList<>();
+
+		whereNodeIterator(node, (nodeIterator, whereNode) -> {
+			if (whereNode.getFieldName().equals(fieldName)) {
+				result.add(whereNode);
+				// 是否删除
+				if (remove) {
+					nodeIterator.remove();
+				}
+			}
+		});
+
+    	return result;
+	}
+
+	/**
+	 * iterator node
+	 * @param search
+	 * @param whereNodeConsumer
+	 * @return
+	 */
+	public static void whereNodeIterator(String search, Consumer<WhereNode> whereNodeConsumer) {
+		Node node = parse(search);
+
+		whereNodeIterator(node, whereNodeConsumer);
+	}
+
+	/**
+	 * iterator node
+	 * @param node
+	 * @param whereNodeConsumer
+	 * @return
+	 */
+	public static void whereNodeIterator(Node node, Consumer<WhereNode> whereNodeConsumer) {
+		if (node == null || whereNodeConsumer == null) {
+			return;
+		}
+
+		whereNodeIterator(node, (nodeIterator, whereNode) -> {
+			whereNodeConsumer.accept(whereNode);
+		});
+	}
+
+	/**
+	 * iterator node
+	 * @param node
+	 * @param whereNodeBiConsumer
+	 * @return
+	 */
+	private static void whereNodeIterator(Node node, BiConsumer<Iterator<Node>, WhereNode> whereNodeBiConsumer) {
+		if (node == null || whereNodeBiConsumer == null) {
+			return;
+		}
+
 		Stack<Node> nodeStack = new Stack<>();
 		nodeStack.add(node);
-		List<WhereNode> result = new ArrayList<>();
+
 		while (!nodeStack.isEmpty()) {
 			Node itemNode = nodeStack.pop();
 			if (itemNode instanceof ConditionNode) {
@@ -124,21 +182,13 @@ public final class RSQLUtils {
 					Node childNode = iterator.next();
 					if (childNode instanceof WhereNode) {
 						WhereNode whereNode = (WhereNode) childNode;
-						if (whereNode.getFieldName().equals(fieldName)) {
-							result.add(whereNode);
-							// 是否删除
-							if (remove) {
-								iterator.remove();
-							}
-						}
+						whereNodeBiConsumer.accept(iterator, whereNode);
 					} else {
 						nodeStack.add(childNode);
 					}
 				}
 			}
 		}
-
-    	return result;
 	}
 
 	public static List<WhereNode> getFieldAllValue(String search, String fieldName) {
