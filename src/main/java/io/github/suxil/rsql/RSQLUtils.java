@@ -173,6 +173,9 @@ public final class RSQLUtils {
 						nodeStack.add(childNode);
 					}
 				}
+			} else if (itemNode instanceof WhereNode) {
+				WhereNode whereNode = (WhereNode) itemNode;
+				whereNodeBiConsumer.accept(null, whereNode);
 			}
 		}
 	}
