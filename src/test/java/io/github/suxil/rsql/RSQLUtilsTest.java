@@ -159,4 +159,13 @@ public class RSQLUtilsTest {
 		Assert.assertFalse(searchStr.contains("c"));
 	}
 
+	@Test
+	public void removeFieldOneTest() {
+		String search = "a=in=(1,2)";
+
+		String searchStr = RSQLUtils.removeField(search, "a");
+
+		Assert.assertFalse(searchStr.contains("a"));
+	}
+
 }

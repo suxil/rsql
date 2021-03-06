@@ -69,7 +69,14 @@ public final class RSQLUtils {
 
     private static Node parse(RSQLParser parser) {
         try {
-            return parser.parse();
+			Node node = parser.parse();
+			if (node instanceof WhereNode) {
+				List<Node> whereList = new ArrayList<>();
+				whereList.add(node);
+				AndNode andNode = new AndNode(whereList);
+				return andNode;
+			}
+            return node;
         } catch (Exception e) {
             throw new RSQLCommonException("parse resolve error");
         }
@@ -173,9 +180,6 @@ public final class RSQLUtils {
 						nodeStack.add(childNode);
 					}
 				}
-			} else if (itemNode instanceof WhereNode) {
-				WhereNode whereNode = (WhereNode) itemNode;
-				whereNodeBiConsumer.accept(null, whereNode);
 			}
 		}
 	}

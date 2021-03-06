@@ -48,6 +48,9 @@ public abstract class ConditionNode implements Node {
 
     @Override
     public String toString() {
+    	if (children != null && children.isEmpty()) {
+			return "";
+		}
         return "(" + StringUtils.join(children, conditionSymbol.toString()) + ")";
     }
 
