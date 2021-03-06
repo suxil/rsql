@@ -15,6 +15,7 @@
  */
 package io.github.suxil.rsql;
 
+import io.github.suxil.rsql.asm.AndNode;
 import io.github.suxil.rsql.asm.Node;
 import io.github.suxil.rsql.asm.WhereNode;
 import io.github.suxil.rsql.asm.WhereOperator;
@@ -106,7 +107,7 @@ public class RSQLUtilsTest {
 
 		Node node = RSQLUtils.parse(search, whereOperators);
 
-		Assert.assertEquals(operator, ((WhereNode) node).getOperator().getSymbol()[0]);
+		Assert.assertEquals(operator, ((WhereNode) ((AndNode) node).getChildren().get(0)).getOperator().getSymbol()[0]);
 	}
 
 	/**
