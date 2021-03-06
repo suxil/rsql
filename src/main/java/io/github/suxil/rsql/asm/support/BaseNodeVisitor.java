@@ -20,7 +20,6 @@ import io.github.suxil.rsql.asm.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * 基础节点访问
@@ -60,10 +59,6 @@ public abstract class BaseNodeVisitor<R, P> implements NodeVisitor<R> {
 
     protected abstract R visitNode(AndNode node, P param);
 
-    protected R visitNode(WhereNode node, P param) {
-        return visitNode(node, param, null);
-    }
-
-    protected abstract R visitNode(WhereNode node, P param, Function<WhereNode, R> function);
+    protected abstract R visitNode(WhereNode node, P param);
 
 }

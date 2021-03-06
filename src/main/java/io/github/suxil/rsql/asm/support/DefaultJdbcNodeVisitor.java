@@ -30,6 +30,12 @@ import java.util.function.Function;
  */
 public class DefaultJdbcNodeVisitor extends BaseNodeVisitor<String, Void> {
 
+	private Function<WhereNode, String> function;
+
+	public DefaultJdbcNodeVisitor(Function<WhereNode, String> function) {
+		this.function = function;
+	}
+
     public String visitOrAndNode(List<Node> nodeList, ConditionSymbol conditionSymbol, Void param) {
         List<String> result = handlerChildren(nodeList, param);
 
@@ -41,14 +47,14 @@ public class DefaultJdbcNodeVisitor extends BaseNodeVisitor<String, Void> {
     }
 
     @Override
-    public String visit(Node node, Function<WhereNode, String> function) {
+    public String visit(Node node) {
         String result = "";
         if (node instanceof AndNode) {
             result = visitNode((AndNode) node, null);
         } else if (node instanceof OrNode) {
             result = visitNode((OrNode) node, null);
         } else if (node instanceof WhereNode) {
-            result = visitNode((WhereNode) node, null, function);
+            result = visitNode((WhereNode) node, null);
         }
         return result;
     }
@@ -64,7 +70,7 @@ public class DefaultJdbcNodeVisitor extends BaseNodeVisitor<String, Void> {
     }
 
     @Override
-    protected String visitNode(WhereNode node, Void param, Function<WhereNode, String> function) {
+    protected String visitNode(WhereNode node, Void param) {
         String fieldName = node.getFieldName();
 
         if (function != null) {

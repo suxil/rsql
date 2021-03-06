@@ -15,8 +15,6 @@
  */
 package io.github.suxil.rsql.asm;
 
-import java.util.function.Function;
-
 /**
  * node visit, handle search condition
  *
@@ -25,10 +23,6 @@ import java.util.function.Function;
  */
 public interface NodeVisitor<R> {
 
-    default R visit(Node node) {
-        return visit(node, null);
-    }
-
-    R visit(Node node, Function<WhereNode, R> function);
+    R visit(Node node);
 
 }

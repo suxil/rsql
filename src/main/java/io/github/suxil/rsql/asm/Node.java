@@ -15,8 +15,6 @@
  */
 package io.github.suxil.rsql.asm;
 
-import java.util.function.Function;
-
 /**
  * 条件解析节点
  *
@@ -26,11 +24,7 @@ import java.util.function.Function;
 public interface Node {
 
 	default <R> R accept(NodeVisitor<R> visitor) {
-		return accept(visitor, null);
-	}
-
-	default <R> R accept(NodeVisitor<R> visitor, Function<WhereNode, R> function) {
-		return visitor.visit(this, function);
+		return visitor.visit(this);
 	}
 
 }

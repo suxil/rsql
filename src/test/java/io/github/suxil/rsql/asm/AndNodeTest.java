@@ -16,7 +16,7 @@ public class AndNodeTest {
 		WhereNode whereNode2 = new WhereNode(RSQLOperator.GE_OP, "age", Arrays.asList("20"));
 		Node resNode = node.withChildren(Arrays.asList(whereNode2));
 
-		Assert.assertEquals(resNode.toString(), String.format("(%s)", whereNode2.toString()));
+		Assert.assertEquals(resNode.toString(), String.format("%s", whereNode2.toString()));
 		Assert.assertEquals(((AndNode) resNode).getChildren().get(0), whereNode2);
 	}
 
