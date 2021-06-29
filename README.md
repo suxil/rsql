@@ -58,4 +58,4 @@ Node node = RSQLUtils.parse("startDate=da=2020-10-11", whereOperators);
 
 ## License
 
-The project is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+The project is released under of the MIT License
